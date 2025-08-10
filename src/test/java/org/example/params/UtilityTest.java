@@ -1,10 +1,12 @@
 package org.example.params;
 
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.*;
+
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.in;
 
 // assertThat(actual).<verify>(expected),
 // verify = orice clauza de validare (equals, true, false, empty etc)
@@ -40,6 +42,30 @@ class UtilityTest {
     @CsvSource(value = {"   test  ;TEST", "tEST;TEST", "  Java;JAVA"}, delimiter = ';')
     void test_Uppercase(String input, String expected) {
         assertThat(Utility.toUpperCase(input))
+                .isEqualTo(expected);
+    }
+
+    @ParameterizedTest
+    @MethodSource("primeNumbersProvider")
+    void test_isPrime1(int input, boolean expected) {
+        assertThat(Utility.isPrime(input))
+                .isEqualTo(expected);
+    }
+
+    static Stream<Arguments> primeNumbersProvider() {
+        return Stream.of(
+                Arguments.of(2, true),
+                Arguments.of(13, true),
+                Arguments.of(6, false),
+                Arguments.of(-12, false),
+                Arguments.of(-7, false)
+        );
+    }
+
+    @ParameterizedTest
+    @ArgumentsSource(PrimeNumbersArgsProvider.class)
+    void test_isPrime2(int input, boolean expected) {
+        assertThat(Utility.isPrime(input))
                 .isEqualTo(expected);
     }
 }

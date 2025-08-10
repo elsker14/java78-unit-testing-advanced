@@ -7,6 +7,8 @@ package org.example.params;
     - singleton
  */
 
+import java.util.stream.IntStream;
+
 public class Utility {
 
     // 1. Check if number is odd (= impar)
@@ -39,6 +41,16 @@ public class Utility {
     // Object = universal parent for all Java classes -> can override toString, hashCode, equals
     public static boolean isInstanceOf(Object obj, Class<?> cls) {
         return cls.isInstance(obj);
+    }
+
+    // 6. Check if number is prime
+    public static boolean isPrime(int number) {
+        if(number < 2) {
+            return false;
+        }
+
+        return IntStream.rangeClosed(2, (int) Math.sqrt(number))
+                .allMatch(it -> number % it != 0);
     }
 
 }
